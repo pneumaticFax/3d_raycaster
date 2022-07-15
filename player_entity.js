@@ -44,38 +44,52 @@ class Player extends Entity{
     }
 
     handleInput(input_handler){
-        if (input_handler.keyboard[LEFT_ARROW] === 1) {
-            this.heading-=radians(2);
-            if(this.heading < 0){
-                this.heading += TWO_PI;
-            }
-            this.heading = this.heading % TWO_PI
+        if (input_handler.keyboard[LEFT_ARROW] === 1 || input_handler.accelerometer[2] < -10) {
+            this.goLeft();
         }
 
-        if (input_handler.keyboard[RIGHT_ARROW] === 1) {
-            this.heading+=radians(2);
-            this.heading = this.heading % TWO_PI
+        if (input_handler.keyboard[RIGHT_ARROW] === 1 || input_handler.accelerometer[2] > 10) {
+            this.goRight();
         }
 
-        if(input_handler.keyboard[UP_ARROW] === 1 || input_handler.keyboard[DOWN_ARROW] === 1){
-            if(input_handler.keyboard[UP_ARROW] === 1){
-                this.speed += .5;
-                if (this.speed > this.max_speed) {
-                    this.speed = this.max_speed;
-                }
+        if(input_handler.keyboard[UP_ARROW] === 1 || input_handler.keyboard[DOWN_ARROW] === 1 || input_handler.accelerometer[1] < 30 || input_handler.accelerometer[1] > 50){
+            if(input_handler.keyboard[UP_ARROW] === 1 ||  input_handler.accelerometer[1] < 30){
+                this.goFaster();
             }
-            if(input_handler.keyboard[DOWN_ARROW] === 1){
-                this.speed -= .05;
-                if(this.speed < this.min_speed){
-                    this.speed = this.min_speed;
-                }
+            if(input_handler.keyboard[DOWN_ARROW] === 1 || input_handler.accelerometer[1] > 50){
+                this.goSlower();
             }
         }else{
-            if(input_handler.keyboard[UP_ARROW] === 0 || input_handler.keyboard[DOWN_ARROW] === 0){
+            if(input_handler.keyboard[UP_ARROW] === 0 || input_handler.keyboard[DOWN_ARROW] === 0 || ( input_handler.accelerometer[1] < 30 && input_handler.accelerometer[1] < 50)){
                 this.speed = 0;
             }
         }
     }
+
+    goLeft(){
+        this.heading-=radians(2);
+        if(this.heading < 0){
+            this.heading += TWO_PI;
+        }
+        this.heading = this.heading % TWO_PI
+    }
+    goRight(){
+        this.heading+=radians(2);
+        this.heading = this.heading % TWO_PI
+    }
+    goFaster(){
+        this.speed += .05;
+        if(this.speed > this.max_speed){
+            this.speed = this.max_speed;
+        }
+    }
+    goSlower(){
+        this.speed -= .05;
+        if(this.speed < this.min_speed){
+            this.speed = this.min_speed;
+        }
+    }
+
 
     setVelocityForCollision(boundary){
         let x1 = boundary.point1.x;

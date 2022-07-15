@@ -11,7 +11,7 @@ let scene_height = 800;
 // let scene_height;
 let slider_fov;
 let scene;
-
+let button_allow_accelerometer;
 function setup() {
 
     // let scene_width = windowWidth/4;
@@ -19,7 +19,8 @@ function setup() {
     //
     // let scene_width = 400;
     // let scene_height = 400;
-    createCanvas(scene_width*2, scene_height);
+    let canvas = createCanvas(scene_width*2, scene_height);
+    canvas.parent('sketch')
 
     background(51);
     for (let i = 0; i < 4; i++){
@@ -37,6 +38,12 @@ function setup() {
     // slider_fov = createSlider(0, 360, player.fov);
     // slider_fov.position(50, 700);
     // slider_fov.input(changeFOV);
+
+    button_allow_accelerometer = createButton('Access Accelerometer Data');
+    button_allow_accelerometer.parent('sketch')
+    button_allow_accelerometer.mousePressed(getAccel);
+    button_allow_accelerometer.position(canvas.width-button_allow_accelerometer.width-10, canvas.height - button_allow_accelerometer.height * 2);
+
 }
 
 function changeFOV() {
@@ -93,4 +100,21 @@ function keyPressed() {
 
 function keyReleased(){
     input_handler.doKeyUp();
+}
+
+
+function getAccel(){
+    DeviceMotionEvent.requestPermission().then(response => {
+        if (response === 'granted') {
+            // Add a listener to get smartphone acceleration
+            // in the XYZ axes (units in m/s^2)
+            window.addEventListener('devicemotion', (event) => {
+            });
+            // Add a listener to get smartphone orientation
+            // in the alpha-beta-gamma axes (units in degrees)
+            window.addEventListener('deviceorientation',(event) => {
+                input_handler.doDeviceMotion(event)
+            });
+        }
+    });
 }
