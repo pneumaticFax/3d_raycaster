@@ -2,8 +2,14 @@ let bounds = [];
 let particle;
 let player
 let input_handler;
-let scene_width = 800;
-let scene_height = 800;
+
+// let scene_width = 800;
+// let scene_height = scene_width/2;
+
+let scene_width;
+let scene_height;
+
+
 //
 // let canvas = createCanvas(windowWidth*.98, windowWidth*.98;
 
@@ -19,13 +25,20 @@ function setup() {
     //
     // let scene_width = 400;
     // let scene_height = 400;
-    let canvas = createCanvas(scene_width*2, scene_height);
+
+    // let canvas = createCanvas(windowWidth*.98, windowHeight*.98);
+
+    let canvas = createCanvas(windowWidth*.98, windowWidth/2*.75);
+    scene_width = canvas.width/2;
+    scene_height = canvas.height;
+
     canvas.parent('sketch')
 
     background(51);
     for (let i = 0; i < 4; i++){
         bounds.push(new Boundary(random(0, scene_width),random(0, scene_height),random(0, scene_width),random(0, scene_height)));
     }
+
     bounds.push(new Boundary(0,0, 0, scene_height));
     bounds.push(new Boundary(0,0, scene_width, 0));
     bounds.push(new Boundary( 0, scene_height,scene_width,scene_height));

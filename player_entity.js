@@ -17,8 +17,8 @@ class Player extends Entity{
 
         for(let bound of this.list_of_bounds){
             this.velocity = this.setVelocityForCollision(bound);
-
         }
+
         this.updatePosition();
         // this.checkBoundary();
         this.updateRays();
